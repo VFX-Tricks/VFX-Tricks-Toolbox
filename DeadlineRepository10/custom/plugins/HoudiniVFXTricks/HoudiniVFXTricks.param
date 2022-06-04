@@ -1,0 +1,26 @@
+[About]
+Type=label
+Label=About
+Category=About Plugin
+CategoryOrder=-1
+Index=0
+Default=VFX Tricks Houdini Plugin for Deadline
+Description=Not configurable
+
+[ConcurrentTasks]
+Type=label
+Label=ConcurrentTasks
+Category=About Plugin
+CategoryOrder=-1
+Index=0
+Default=True
+Description=Not configurable
+
+[Houdini19_0_Hython_Executable]
+Label=Houdini 19.0 Hython Executable
+Category=Render Executables
+CategoryOrder=0
+Type=multilinemultifilename
+Index=0
+Default=C:\Program Files\Side Effects Software\Houdini 19.0.000\bin\Hython.exe;/Applications/Houdini/Houdini19.0.000/Frameworks/Houdini.framework/Versions/19.0.000/Resources/bin/hython;/opt/hfs19.0/bin/hython
+Description=The path to the hython executable. It can be found in the Houdini bin folder.

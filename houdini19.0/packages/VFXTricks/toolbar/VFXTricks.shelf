@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shelfDocument>
+  <!-- This file contains definitions of shelves, toolbars, and tools.
+ It should not be hand-edited when it is being used by the application.
+ Note, that two definitions of the same element are not allowed in
+ a single file. -->
+
+  <toolshelf name="VFX Tricks" label="VFX Tricks">
+    <memberTool name="Update Toggle"/>
+    <memberTool name="Import Sequencer Shots"/>
+    <memberTool name="Center in View"/>
+    <memberTool name="Create Shot Context"/>
+    <memberTool name="Set Frame Range"/>
+  </toolshelf>
+
+  <tool name="Create Shot Context" label="Create Shot Context" icon="hicon:/SVGIcons.index?DOP_fetchdata.svg">
+    <helpText><![CDATA[= Create Shot Context =
+
+#icon: path/to/icon
+
+"""Create Shot Contexts that are compatible with VFX Tricks Tools."""
+
+Enhance your workflow by using Shot Contexts that will help with multi-shot hip files.
+Optionally, it's designed to work with shots imported from Unreal Engine's Sequencer.
+
+== Create Generic Shot Context ==
+
+# Run Create Shot Context Tool from Shelf
+# This will create Generic Context Subnet in /obj Network.
+# Rename Subnet to the shot name.
+# Specify frame range and preroll in Shot Context parameters
+# Optionally specify Camera if it is outiside of Shot Context
+# Create all your shot work inside Shot Context Subnet. Including GEO, ROP, LOP, etc. networks.
+
+== Create Unreal Engine's Sequencer Shot Context ==
+    
+# Use Import Sequencer Shots Tool first.
+# Run Create Shot Context Tool from Shelf
+# Select shots you want to import from the list.
+# Create all your shot work inside Shot Context Subnet. Including GEO, ROP, LOP, etc. networks.
+
+TIP:
+    Import Sequencer Shots Tool will create /obj/FromUE Subnet. It needs to exist in order to create Shot Contexts from Sequencer. Do not rename or delete it.]]></helpText>
+    <script scriptType="python"><![CDATA[import hou
+
+obj_node = hou.node('/obj')
+fromUE_node = hou.node('/obj/FromUE')
+
+def create_context(shot_name='Generic'):
+    if shot_name != 'Generic':
+        shot_node = fromUE_node.node(shot_name)
+        
+    # create new subnet node
+    shot_context = obj_node.createNode('subnet')
+    shot_context.setName(shot_name, True)
+    shot_context.setColor(hou.Color(0.576, 0.208, 0.475))
+    shot_context.setDisplayFlag(False)
+    shot_context.setSelected(True)
+    
+    # modify and add parameters
+    parms = shot_context.parmTemplateGroup()
+    parms.hideFolder('Transform', True)
+    parms.hideFolder('Subnet', True)
+    
+    folder = hou.FolderParmTemplate("folder", "Shot Info")
+    folder.addParmTemplate(hou.StringParmTemplate('shot', 'Shot', 1))
+    folder.addParmTemplate(hou.IntParmTemplate('preroll', 'Preroll', 1))
+    folder.addParmTemplate(hou.IntParmTemplate('start', 'Start', 1))
+    folder.addParmTemplate(hou.IntParmTemplate('end', 'End', 1))
+    folder.addParmTemplate(hou.StringParmTemplate('camera', 'Camera', 1, string_type=hou.stringParmType.NodeReference))
+    parms.append(folder)
+
+    shot_context.setParmTemplateGroup(parms)
+    
+    # set parameters
+    shot_context.parm('shot').set('$OS')
+    
+    if shot_name != 'Generic':
+        p1 = shot_context.parm('start')
+        p2 = shot_node.parm('start')
+        p1.set(p2)
+        
+        p1 = shot_context.parm('end')
+        p2 = shot_node.parm('end')
+        p1.set(p2)
+        
+        p1 = shot_context.parm('camera')
+        p2 = shot_node.node('camera').path()
+        p1.set(p2)
+    else:
+        shot_context.parm('start').set(1001)
+        shot_context.parm('end').set(1100)
+    
+    return shot_context
+            
+            
+def position_node(node):
+    # find SHOTS network box
+    shotsNetworkbox = None    
+    networkboxes = obj_node.networkBoxes()
+    shotsNetworkbox = None
+    for networkbox in networkboxes:
+        if networkbox.comment() == 'SHOTS':
+            shotsNetworkbox = networkbox
+                    
+    # position subnet node
+    position = None
+    if shotsNetworkbox:
+        boxPos = shotsNetworkbox.position()
+        boxSize = shotsNetworkbox.size()
+        position = boxPos + boxSize/2
+        shotsNetworkbox.addNode(node)
+    else:
+        editors = [pane for pane in hou.ui.paneTabs() if isinstance(pane, hou.NetworkEditor) and pane.isCurrentTab() and pane.pwd().path() == '/obj']
+        if len(editors) == 1:
+            editor = editors[0]
+            bounds = editor.visibleBounds()
+            position = bounds.center()
+    if position:
+        node.setPosition(position)
+
+        
+if not fromUE_node:
+    context_node = create_context()
+    position_node(context_node)
+else:
+    # get shot list
+    shotList = ['Generic']
+    for child in fromUE_node.children():
+        if child.type().name() == 'subnet':
+            shotList.append(child.name())
+    
+    # display input message
+    choices = hou.ui.selectFromList(shotList)
+    for choice in choices:
+        shot_name = shotList[choice]
+        
+        # check if subnet already exists
+        subnet = obj_node.node(shot_name)
+        if not subnet:
+            context_node = create_context(shot_name)
+            position_node(context_node)
+]]></script>
+  </tool>
+
+  <tool name="Update Toggle" label="Update Toggle" icon="hicon:/SVGIcons.index?SOP_each.svg">
+    <helpText><![CDATA[= Update Toggle =
+
+#icon: path/to/icon
+
+"""Toggles update mode between Manual and Auto Update. Useful to have it binded to hotkey. Default hotkey is F11."""
+
+    
+
+]]></helpText>
+    <script scriptType="python"><![CDATA[import hou
+mode = hou.updateModeSetting().name()
+if mode == "AutoUpdate":
+    hou.setUpdateMode(hou.updateMode.Manual)
+if mode == "Manual":
+    hou.setUpdateMode(hou.updateMode.AutoUpdate)]]></script>
+  </tool>
+
+  <tool name="Center in View" label="Center in View" icon="hicon:/SVGIcons.index?CHANNELS_dope_snap_sel.svg">
+    <helpText><![CDATA[= Center in View =
+
+#icon: path/to/icon
+
+"""For any selected Node that has tx, ty, tz Parameters, values wil be set to the center of current Scene View pane."""
+
+    
+]]></helpText>
+    <script scriptType="python"><![CDATA[import hou
+import toolutils
+
+try:
+    viewer = toolutils.sceneViewer()
+    viewport = viewer.curViewport()
+    pivot = viewport.viewPivot()
+    
+    selectedNodes = hou.selectedNodes()
+    if len(selectedNodes) > 0:
+        for node in selectedNodes:
+            for parm in node.parms():
+                if parm.name() == 'tx':
+                    parm.set(pivot[0])
+                if parm.name() == 'ty':
+                    parm.set(pivot[1])
+                if parm.name() == 'tz':
+                    parm.set(pivot[2])
+except:
+    pass]]></script>
+  </tool>
+
+  <tool name="Set Frame Range" label="Set Frame Range" icon="hicon:/SVGIcons.index?PANETYPES_take_list.svg">
+    <helpText><![CDATA[= Set Frame Range =
+
+#icon: path/to/icon
+
+"""Set playbar range to range defined by Shot Context in current Network View"""
+
+
+]]></helpText>
+    <script scriptType="python"><![CDATA[import hou
+
+def findShotSubnet(path):
+    path = path.split('/')[:3]
+    path = '/'.join(path)
+    shotSubnet = hou.node(path)
+    if shotSubnet.parmTemplateGroup().findFolder('Shot Info'):
+        return shotSubnet
+    else:
+        return None
+        
+editors = [pane for pane in hou.ui.paneTabs() if isinstance(pane, hou.NetworkEditor) and pane.isCurrentTab() and pane.pwd().path().startswith('/obj')]
+
+try:
+    if editors:
+        editor = editors[0]
+        path = editor.pwd().path()
+        shotSubnet = findShotSubnet(path)
+        if shotSubnet:
+            preroll = shotSubnet.parm('preroll').eval()
+            start = shotSubnet.parm('start').eval()
+            end = shotSubnet.parm('end').eval()
+            
+            hou.playbar.setFrameRange(start-preroll, end)
+            hou.playbar.setPlaybackRange(start-preroll, end)
+except:
+    pass]]></script>
+  </tool>
+
+  <tool name="Import Sequencer Shots" label="Import Sequencer Shots" icon="hicon:/SVGIcons.index?BUTTONS_download.svg">
+    <helpText><![CDATA[= Import Sequencer Shots =
+
+#icon: path/to/icon
+
+"""Import fbx files from Unreal Engine's Sequencer and organize them in Houdini"""
+
+Once shots are imported to Houdini, you can create Shot Contexts with another tool in the shelf. It will allow you to work in multi-shot workflow.
+
+TIP:
+    To export Sequencer shots from Unreal Engine, use script included in VFX Tricks Tools.
+    
+== Importing shots from Sequencer ==
+
+# Run this tool
+# If sequencer_export folder is not present in $JOB folder, you can select another location
+# FBX files will be imported and placed in /obj/From_UE Subnet
+# Any changes you make inside From_UE Subnet will be lost when you reimport shots. You should not work inside this subnet, just pull object out with Object Merge SOP or Asset Merge SOP
+# Create Shot Contexts with another VFX Tricks tool. Parameters like frame range and camera will be automatically referenced.
+# Most of VFX Tricks Tools rely on Shot Contexts. They are optional but very useful for multi-shot workflow
+]]></helpText>
+    <script scriptType="python"><![CDATA[import hou
+import os
+import glob
+import json
+
+
+job = hou.getenv('JOB')
+import_folder = os.path.join(job, 'sequencer_export')
+json_file = os.path.join(import_folder, 'shots_data.json')
+
+parms_to_fix = ['tx', 'ty', 'tz', 'rx', 'ry', 'rz']
+obj = hou.node("/obj")
+
+
+def import_files(import_folder):
+    json_file = os.path.join(import_folder, 'shots_data.json')
+    
+    # create or remove master subnet
+    obj_subnet = hou.node("/obj/FromUE")
+    if obj_subnet:
+        subnet_pos = obj_subnet.position()
+        obj_subnet.destroy()
+    obj_subnet = obj.createNode("subnet")
+    obj_subnet.setName("FromUE")
+    
+    # try to positon subnet to old location
+    try:
+        obj_subnet.setPosition(subnet_pos)
+    except:
+        pass    
+        
+    # read JSON file
+    with open(json_file) as f:
+        shots_data = json.load(f)
+                    
+    # get FBX files
+    files = glob.glob(import_folder + '/*.fbx')
+    importedObjs = []
+    
+    for file in files:
+        shot = file.split('\\')[-1][:-4]
+        shot = shot.split('_')[0]
+        
+        importedObj = hou.hipFile.importFBX(
+            file_name = file,
+            import_joints_and_skin=False,
+            import_lights=False,
+            import_materials=False,
+            convert_units=True,
+            convert_into_y_up_coordinate_system=True,
+            unlock_geometry=True,
+        )
+        for child in importedObj[0].children():
+            # fix curve extrapolation to infnity
+            for parm_to_fix in parms_to_fix:
+                parm = child.parm(parm_to_fix)
+                parm.setKeyframeExtrapolation(True, hou.parmExtrapolate.Slope)
+                parm.setKeyframeExtrapolation(False, hou.parmExtrapolate.Slope)
+        
+            # rename nodes
+            type = child.type()
+            desc = type.description()
+            if desc == 'Camera':
+                child.setName('camera')
+            if desc == 'Geometry':
+                child.setName('GEO_' + child.name())
+                
+                # unlock File SOPs
+                #for sop in child.children():
+                #    if sop.type().description() == 'File':
+                #        sop.setHardLocked(False)
+             
+        # add parameters
+        parms = importedObj[0].parmTemplateGroup()
+        parms.hideFolder('Transform', True)
+        parms.hideFolder('Subnet', True)
+        
+        folder = hou.FolderParmTemplate("folder", "Shot Info")
+        folder.addParmTemplate(hou.IntParmTemplate('start', 'Start', 1))
+        folder.addParmTemplate(hou.IntParmTemplate('end', 'End', 1))
+        parms.append(folder)
+        importedObj[0].setParmTemplateGroup(parms)
+        
+        
+        # set parameters
+        for data in shots_data:
+            if data['shot'] == shot:
+                importedObj[0].parm('start').set(data['start'])
+                importedObj[0].parm('end').set(data['end'])
+        
+        importedObj[0].setName(shot + '_temp')
+        importedObj[0].setDisplayFlag(False)
+        
+        importedObjs.append(importedObj[0])
+
+    hou.moveNodesTo(tuple(importedObjs), obj_subnet)
+    obj_subnet.layoutChildren()
+    obj_subnet.setDisplayFlag(False)
+    
+    #fix temp names
+    for child in obj_subnet.children():
+        child.setName(child.name()[:-5])
+        #child.parm('fbx_node_name').hide(True)
+        
+        
+# check if folder exists
+if not os.path.isdir(import_folder):
+    choice = hou.ui.displayMessage(
+                            "sequencer_export folder in $JOB doesn't exist",
+                            buttons=('Select folder', 'Cancel'),
+                            close_choice = 1,
+                            title = 'Folder missing'
+                            )
+    # select new folder                        
+    if choice == 0:
+        import_folder = hou.ui.selectFile(
+                                        start_directory = hou.expandString(job),
+                                        file_type = hou.fileType.Directory,
+                                        title = 'Select folder'
+                                        )
+# check if folder exists
+if os.path.isdir(import_folder):
+    file_names = os.listdir(import_folder)
+    
+    # check if folder is empty
+    if len(file_names) == 0:
+        hou.ui.displayMessage('Folder is empty')
+    else:
+    
+        # check if json file exists
+        if not 'shots_data.json' in file_names:
+            hou.ui.displayMessage('shots_data.json is missing')
+        elif not any(x.endswith('.fbx') for x in file_names):
+            hou.ui.displayMessage('no fbx files')
+        else:
+            # begin work
+            import_files(import_folder)
+
+                
+]]></script>
+  </tool>
+</shelfDocument>

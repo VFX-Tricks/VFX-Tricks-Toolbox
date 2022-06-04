@@ -1,0 +1,10 @@
+{
+    "env": [
+        {
+            "VFXTRICKS": "$HOUDINI_PACKAGE_PATH/VFXTricks"
+        },
+        {
+            "HOUDINI_PATH": "$VFXTRICKS"
+        }
+    ]
+}
