@@ -3,9 +3,9 @@
 # VFX Tricks Toolbox
 
 Contents:
-- [Houdini HDAs and Shelftools](https://github.com/VFX-Tricks/VFX-Tricks-Toolbox/edit/main/README.md#1-houdini-hdas-and-shelftools)
-- [Deadline plugins](https://github.com/VFX-Tricks/VFX-Tricks-Toolbox/edit/main/README.md#2-deadline-plugins)
-- [Unreal Engine Sequencer Exporter](https://github.com/VFX-Tricks/VFX-Tricks-Toolbox/edit/main/README.md#3-unreal-engine-sequencer-exporter)
+- [Houdini HDAs and Shelftools](https://github.com/VFX-Tricks/VFX-Tricks-Toolbox/blob/main/README.md#1-houdini-hdas-and-shelftools)
+- [Deadline plugins](https://github.com/VFX-Tricks/VFX-Tricks-Toolbox/blob/main/README.md#2-deadline-plugins)
+- [Unreal Engine Sequencer Exporter](https://github.com/VFX-Tricks/VFX-Tricks-Toolbox/blob/main/README.md#3-unreal-engine-sequencer-exporter)
 
 # 1. Houdini HDAs and Shelftools
 https://www.sidefx.com/
@@ -19,23 +19,28 @@ The main goal of Houdini tools is to provide efficient caching workflows. Writin
 - sections (wedging) 🍕
 
 ### Multishot workflow
-At VFX Tricks
+At VFX Tricks usually we provide single hip file with multiple shots inside. For single artist working on mulitple shots, I find this way better than conventional approach at VFX studios(each shot/element in separate hip file).
+
+Shelftools provide:
+- define OBJ contexts for each shot
+- set frame range per shot
+- Cacher SOP and Farm Submiter ROP take advantage of this workflow
 
 # 2. Deadline plugins
-https://www.awsthinkbox.com/deadline
+https://www.awsthinkbox.com/deadline <br>
 https://docs.thinkboxsoftware.com/products/deadline/10.1/1_User%20Manual/manual/app-index.html
 
 VFX Tricks Toolbox extends existing Houdini plugins shipped with Deadline.
 
-### Features
-- USD caching
-- USD rendering via [husk](https://www.sidefx.com/docs/houdini/ref/utils/husk.html)
-- sections(wedges) are submits hip file only once. Current section(wedge) is defined by env variable. Resulting faster submission to farm ⏱️.
+- USD caching - SOP and Stage
+- USD rendering via command line utility - [husk](https://www.sidefx.com/docs/houdini/ref/utils/husk.html)
+- sections(wedges) submits hip file only once. Current section(wedge) is defined by env variable, resulting faster submission to farm ⏱️.
 
 # 3. Unreal Engine Sequencer Exporter
 https://docs.unrealengine.com/5.0/en-US/unreal-engine-sequencer-movie-tool-overview/
 
-dsdsdsdsadas
+A quick way of exporting animated assets (static mesh, camera, etc.) from Sequencer to FBX with supporting JSON data file. <br>
+Then import to Houdini each shot as a Multishot context with corresponding assets and frame ranges.
 
 
 
