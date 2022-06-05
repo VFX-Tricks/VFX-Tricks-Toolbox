@@ -7,6 +7,8 @@ Contents:
 - [Deadline plugins](https://github.com/VFX-Tricks/VFX-Tricks-Toolbox/blob/main/README.md#2-deadline-plugins)
 - [Unreal Engine Sequencer Exporter](https://github.com/VFX-Tricks/VFX-Tricks-Toolbox/blob/main/README.md#3-unreal-engine-sequencer-exporter)
 
+See [Installation guide](VFXTricksToolbox_install_guide_en.pdf)
+
 # 1. Houdini HDAs and Shelftools
 https://www.sidefx.com/
 
@@ -42,8 +44,7 @@ https://docs.unrealengine.com/5.0/en-US/unreal-engine-sequencer-movie-tool-overv
 A quick way of exporting animated assets (static mesh, camera, etc.) from Sequencer to FBX with supporting JSON data file. <br>
 Then import to Houdini each shot as a Multishot context with corresponding assets and frame ranges.
 
+![sequencer_gh](https://user-images.githubusercontent.com/9046931/172036894-9816bc65-295e-4f32-974a-8148c01ccc5d.jpg)
 
-
-See [Installation guide](VFXTricksToolbox_install_guide_en.pdf)
 
 
