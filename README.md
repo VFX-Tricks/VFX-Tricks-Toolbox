@@ -36,7 +36,7 @@ VFX Tricks Toolbox extends existing Houdini plugins shipped with Deadline.
 
 - USD caching - SOP and Stage
 - USD rendering via command line utility - [husk](https://www.sidefx.com/docs/houdini/ref/utils/husk.html)
-- sections(wedges) submits hip file only once. Current section(wedge) is defined by env variable, resulting faster submission to farm ⏱️.
+- sections(wedges) submits hip file only once. Current section(wedge) is defined by env variable, resulting faster submission to farm ⏱
 
 # 3. Unreal Engine Sequencer Exporter
 https://docs.unrealengine.com/5.0/en-US/unreal-engine-sequencer-movie-tool-overview/
