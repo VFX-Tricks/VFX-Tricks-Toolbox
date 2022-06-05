@@ -9,10 +9,16 @@ Contents:
 
 See [Installation guide](VFXTricksToolbox_install_guide_en.pdf)
 
+Submit bugs and feature requests via [Issues](https://github.com/VFX-Tricks/VFX-Tricks-Toolbox/issues)
+
+Feedback is welcome via [Discussions](https://github.com/VFX-Tricks/VFX-Tricks-Toolbox/discussions)
+
 # 1. Houdini HDAs and Shelftools
 https://www.sidefx.com/
 
 The main goal of Houdini tools is to provide efficient caching workflows. Writing and reading caches is at the heart of every VFX pipeline 🎞️.
+
+⚠️ HDAs are in Indie .hdalc format
 
 ### Cacher main features
 - .usd, .bgeo.sc and .vdb
