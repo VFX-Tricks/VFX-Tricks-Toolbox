@@ -3,9 +3,9 @@
 # VFX Tricks Toolbox
 
 Contents:
-- [Houdini HDAs and Shelftools](https://github.com/VFX-Tricks/VFX-Tricks-Toolbox/blob/main/README.md#1-houdini-hdas-and-shelftools)
-- [Deadline plugins](https://github.com/VFX-Tricks/VFX-Tricks-Toolbox/blob/main/README.md#2-deadline-plugins)
-- [Unreal Engine Sequencer Exporter](https://github.com/VFX-Tricks/VFX-Tricks-Toolbox/blob/main/README.md#3-unreal-engine-sequencer-exporter)
+- [Houdini HDAs and Shelftools](https://github.com/VFX-Tricks/VFX-Tricks-Toolbox#1-houdini-hdas-and-shelftools)
+- [Deadline plugins](https://github.com/VFX-Tricks/VFX-Tricks-Toolbox#2-deadline-plugins)
+- [Unreal Engine Sequencer Exporter](https://github.com/VFX-Tricks/VFX-Tricks-Toolbox#3-unreal-engine-sequencer-exporter)
 
 See [Installation guide](VFXTricksToolbox_install_guide_en.pdf)
 
