@@ -16,9 +16,11 @@ Feedback is welcome via [Discussions](https://github.com/VFX-Tricks/VFX-Tricks-T
 # 1. Houdini HDAs and Shelftools
 https://www.sidefx.com/
 
-The main goal of Houdini tools is to provide efficient caching workflows. Writing and reading caches is at the heart of every VFX pipeline 🎞️.
+The main goal of Houdini tools is to provide efficient caching workflows. Writing and reading caches is at the heart of every VFX pipeline 🎥
 
 ⚠️ HDAs are in Indie .hdalc format
+
+<img src="https://user-images.githubusercontent.com/9046931/172088904-22ed52f4-7f09-4ddb-8579-5dd55f0c9bdd.png" width="500">
 
 ### Cacher main features
 - .usd, .bgeo.sc and .vdb
@@ -50,7 +52,7 @@ https://docs.unrealengine.com/5.0/en-US/unreal-engine-sequencer-movie-tool-overv
 A quick way of exporting animated assets (static mesh, camera, etc.) from Sequencer to FBX with supporting JSON data file. <br>
 Then import to Houdini each shot as a Multishot context with corresponding assets and frame ranges.
 
-![sequencer_gh](https://user-images.githubusercontent.com/9046931/172036894-9816bc65-295e-4f32-974a-8148c01ccc5d.jpg)
+<img src="https://user-images.githubusercontent.com/9046931/172036894-9816bc65-295e-4f32-974a-8148c01ccc5d.jpg" width="500">
 
 
 
