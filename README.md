@@ -1,4 +1,5 @@
-<img src="https://user-images.githubusercontent.com/9046931/172026803-81ad8335-fa79-42b7-989d-2fd32e1f2168.svg" width="500">
+<img src="https://user-images.githubusercontent.com/9046931/172205434-25c8b7d1-816c-4689-935d-7717d00e27ab.svg" width="500">
+
 
 # VFX Tricks Toolbox
 
