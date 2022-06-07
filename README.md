@@ -17,24 +17,37 @@ Feedback is welcome via [Discussions](https://github.com/VFX-Tricks/VFX-Tricks-T
 # 1. Houdini HDAs and Shelftools
 https://www.sidefx.com/
 
-The main goal of Houdini tools is to provide efficient caching workflows. Writing and reading caches is at the heart of every VFX pipeline 🎥
+The main goal of Houdini tools is to accelerate content creation at VFX Tricks. Creating setups and tutorials is time consuming. Mundane tasks like caching, publishing and farm submission shouldn't be a slowing down factor. Writing and reading caches is at the heart of every VFX pipeline 🎥, it needs to be quick, easy and reliable. After seeing many implementations at various studios, I decided to make my own that will suit VFX Tricks creators needs. This package will include caching and setup/shot specific tools.
 
 ⚠️ HDAs are in Indie .hdalc format
 
+
+## Cacher SOP
 <img src="https://user-images.githubusercontent.com/9046931/172088904-22ed52f4-7f09-4ddb-8579-5dd55f0c9bdd.png" width="500">
 
-### Cacher main features
 - .usd, .bgeo.sc and .vdb
 - USD geometry purpose (render, proxy and guide)
 - version control and stats 📝
 - sections (wedging) 🍕
 
-### Multishot workflow
-At VFX Tricks usually we provide single hip file with multiple shots inside. For single artist working on mulitple shots, I find this way better than conventional approach at VFX studios(each shot/element in separate hip file).
+## Lop Cacher Import
+<img src="https://user-images.githubusercontent.com/9046931/172474865-c958043b-d963-497d-9a5f-09eb4a7456ef.png" width="500">
 
-Shelftools provide:
-- define OBJ contexts for each shot
+- dynamically import .usd Cachers to LOP network
+- well suited for Multishot workflow
+
+## Multishot workflow
+<img src="https://user-images.githubusercontent.com/9046931/172475669-c3385945-612e-4e4f-8021-e5b64bfa4b3e.png" width="500">
+
+At VFX Tricks we usually provide single hip file with multiple shots inside. For single artist working on mulitple shots, I find this way better than conventional approach at VFX studios(each shot/element in separate hip file).
+
+## Shelftools
+<img src="https://user-images.githubusercontent.com/9046931/172474004-f87f45f2-862f-4a3a-80fb-f877a46caf1e.png" width="500">
+
+- create OBJ contexts for each shot
+- import shots from UE Sequencer
 - set frame range per shot
+- toggle cooking mode - I recommend assigning a hotkey -> must have!
 - Cacher SOP and Farm Submiter ROP take advantage of this workflow
 
 # 2. Deadline plugins
@@ -46,6 +59,8 @@ VFX Tricks Toolbox extends existing Houdini plugins shipped with Deadline.
 - USD caching - SOP and Stage
 - USD rendering via command line utility - [husk](https://www.sidefx.com/docs/houdini/ref/utils/husk.html)
 - sections(wedges) submits hip file only once. Current section(wedge) is defined by env variable, resulting faster submission to farm ⏱
+
+<img src="https://user-images.githubusercontent.com/9046931/172478881-4d28afcf-d6ba-479d-b2f0-44ded527fdb9.png" width="500">
 
 # 3. Unreal Engine Sequencer Exporter
 https://docs.unrealengine.com/5.0/en-US/unreal-engine-sequencer-movie-tool-overview/
